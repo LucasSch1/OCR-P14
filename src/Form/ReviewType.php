@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 final class ReviewType extends AbstractType
 {
@@ -35,6 +36,9 @@ final class ReviewType extends AbstractType
             ->add('comment', TextareaType::class, [
                 'label' => 'Commentaire',
                 'required' => false,
+                'constraints' => [
+                    new Length(['max' => 200]),
+                ],
                 'attr' => [
                     'placeholder' => 'Commentaire',
                 ]
