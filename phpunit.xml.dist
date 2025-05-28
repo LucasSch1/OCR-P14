@@ -13,6 +13,7 @@
         <server name="SYMFONY_PHPUNIT_VERSION" value="9.6" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
         <env name="SYMFONY_PHPUNIT_LOCALE" value="fr_FR"/>
+        <env name="DAMADoctrineTestBundle_ENABLE_TRANSACTIONAL_TEST" value="true"/>
     </php>
 
     <testsuites>
@@ -20,6 +21,10 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    </extensions>
 
     <coverage processUncoveredFiles="true">
         <include>
