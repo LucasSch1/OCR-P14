@@ -14,7 +14,7 @@ final class RegisterTest extends FunctionalTestCase
     {
         $this->get('/auth/register');
 
-        $this->client->submitForm('S\'inscrire', self::getFormData());
+        $this->submit('S\'inscrire', self::getFormData());
 
         self::assertResponseRedirects('/auth/login');
 
@@ -35,7 +35,7 @@ final class RegisterTest extends FunctionalTestCase
     {
         $this->get('/auth/register');
 
-        $this->client->submitForm('S\'inscrire', $formData);
+        $this->submit('S\'inscrire', $formData);
 
         self::assertResponseIsUnprocessable();
     }
@@ -52,10 +52,10 @@ final class RegisterTest extends FunctionalTestCase
 
     public static function getFormData(array $overrideData = []): array
     {
-        return [
-            'register[username]' => 'username',
-            'register[email]' => 'user@email.com',
-            'register[plainPassword]' => 'SuperPassword123!'
-        ] + $overrideData;
+        return $overrideData + [
+                'register[username]' => 'username',
+                'register[email]' => 'user@email.com',
+                'register[plainPassword]' => 'SuperPassword123!'
+            ];
     }
 }
