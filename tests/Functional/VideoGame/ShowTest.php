@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class ShowTest extends FunctionalTestCase
 {
+    // Test pour l'affichage du jeu vidéo
     public function testShouldShowVideoGame(): void
     {
         $this->get('/jeu-video-1');
@@ -18,6 +19,8 @@ final class ShowTest extends FunctionalTestCase
         self::assertSelectorTextContains('h1', 'Jeu vidéo 1');
     }
 
+
+    // Test pour poster un avis
     public function testShouldPostReview(): void
     {
         $this->login();
@@ -55,9 +58,7 @@ final class ShowTest extends FunctionalTestCase
     }
 
 
-    /*
-    * Sa marche
-    */
+    // Test pour ne pas afficher le formulaire en tant qu'invité
     public function testFormReviewNotShowForeGuest():void
     {
         $this->get('/jeu-video-1');
@@ -71,6 +72,7 @@ final class ShowTest extends FunctionalTestCase
     }
 
 
+    // Test pour ne pas soumettre une requete POST en tant qu'invité
     public function testGuestCannotSubmitFormReview():void
     {
         $this->get('/jeu-video-1');
@@ -86,6 +88,8 @@ final class ShowTest extends FunctionalTestCase
         self::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
+
+    // Test pour envoyer un formulaire invalide
     /**
      * @dataProvider provideInvalidFormData
      */
@@ -103,11 +107,14 @@ final class ShowTest extends FunctionalTestCase
 
     }
 
+
+    // Créer des données invalides
     public static function provideInvalidFormData(): iterable
     {
         yield 'too long comment' => [self::getFormData(['review[comment]' => str_repeat('a', 1001)])];
     }
 
+    // Créer des données valides
     public static function getFormData(array $overrideData = []): array
     {
         return $overrideData + [
