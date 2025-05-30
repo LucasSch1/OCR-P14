@@ -34,25 +34,29 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         );
 
 
-        $videoGames = array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame)
+        $videoGames = array_map(fn (int $index): VideoGame => (new VideoGame)
             ->setTitle(sprintf('Jeu vidéo %d', $index))
             ->setDescription($this->faker->paragraphs(10, true))
             ->setReleaseDate(new DateTimeImmutable())
             ->setTest($this->faker->paragraphs(6, true))
             ->setRating(($index % 5) + 1)
             ->setImageName(sprintf('video_game_%d.png', $index))
-            ->setImageSize(2_098_872)
+            ->setImageSize(2_098_872),
+            range(0, 49)
         );
 
 
         array_walk($videoGames,static function(VideoGame $videoGame,int $index) use ($tags) {
             for ($tagsIndex = 0; $tagsIndex < 5; $tagsIndex++) {
-                $videoGame->getTags()->add($tags[($index + $tagsIndex) % count($tags)]);;
+                $tag = $tags [($index + $tagsIndex) % count($tags)];
+                $videoGame->addTag($tag);
             }
         });
 
 
-        array_walk($videoGames, [$manager, 'persist']);
+        foreach($videoGames as $videoGame) {
+            $manager->persist($videoGame);
+        }
 
         $manager->flush();
 
