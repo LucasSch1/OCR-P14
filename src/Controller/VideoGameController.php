@@ -8,6 +8,7 @@ use App\Form\ReviewType;
 use App\List\ListFactory;
 use App\List\VideoGameList\Pagination;
 use App\Model\Entity\Review;
+use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -44,8 +45,12 @@ final class VideoGameController extends AbstractController
         $form = $this->createForm(ReviewType::class, $review)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user = $this->getUser();
+            if (!$user instanceof User) {
+                throw new \LogicException('L\'utilisateur courant n\'est pas du bon type.');
+            }
             $review->setVideoGame($videoGame);
-            $review->setUser($this->getUser());
+            $review->setUser($user);
             $entityManager->persist($review);
             $entityManager->flush();
             return $this->redirectToRoute('video_games_show', ['slug' => $videoGame->getSlug()]);
