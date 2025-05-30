@@ -43,7 +43,7 @@ final class RegisterTest extends FunctionalTestCase
 
 
     /**
-     * @return iterable<string, array<string, string>>
+     * @return iterable<string, array<int, array<string, string>>>
      */
     public static function provideInvalidFormData(): iterable
     {
@@ -58,7 +58,7 @@ final class RegisterTest extends FunctionalTestCase
 
     /**
      * @param array<string, string> $overrideData
-     * @return array
+     * @return array<string, string>
      */
     public static function getFormData(array $overrideData = []): array
     {

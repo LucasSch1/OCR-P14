@@ -93,7 +93,7 @@ final class ShowTest extends FunctionalTestCase
 
     /**
      * @dataProvider provideInvalidFormData
-     * @param string $formData
+     * @param array<string, string> $formData
      */
     public function testShouldNotPostReview(array $formData): void
     {
@@ -112,7 +112,7 @@ final class ShowTest extends FunctionalTestCase
 
     // Créer des données invalides
     /**
-     * @return iterable<string, array<string, mixed>>
+     * @return iterable<string, array<int, array<string, mixed>>>
      */
     public static function provideInvalidFormData(): iterable
     {

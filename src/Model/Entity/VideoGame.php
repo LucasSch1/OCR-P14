@@ -34,7 +34,7 @@ class VideoGame
     #[Id]
     #[GeneratedValue]
     #[Column]
-    private ?int $id = null;
+    private int $id;
 
     #[NotBlank]
     #[Length(max: 100)]
@@ -78,14 +78,14 @@ class VideoGame
     private NumberOfRatingPerValue $numberOfRatingsPerValue;
 
     /**
-     * @var Collection<Tag>
+     * @var Collection<int, Tag>
      */
     #[ManyToMany(targetEntity: Tag::class)]
     #[JoinTable(name: 'video_game_tags')]
     private Collection $tags;
 
     /**
-     * @var Collection<Review>
+     * @var Collection<int, Review>
      */
     #[OneToMany(targetEntity: Review::class, mappedBy: 'videoGame')]
     private Collection $reviews;
@@ -216,15 +216,22 @@ class VideoGame
     }
 
     /**
-     * @return Collection<Tag>
+     * @return Collection<int, Tag>
      */
     public function getTags(): Collection
     {
         return $this->tags;
     }
 
+    public function addTag(Tag $tag): void
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+    }
+
     /**
-     * @return Collection<Review>
+     * @return Collection<int, Review>
      */
     public function getReviews(): Collection
     {
@@ -235,4 +242,28 @@ class VideoGame
     {
         return $this->reviews->exists(static fn (int $key, Review $review): bool => $review->getUser() === $user);
     }
+
+    public function setId(int $id): VideoGame
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function setSlug(string $slug): VideoGame
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): VideoGame
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getUpdatedAt(): DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
 }
