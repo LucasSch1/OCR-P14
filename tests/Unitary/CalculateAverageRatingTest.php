@@ -33,6 +33,9 @@ final class CalculateAverageRatingTest extends TestCase
        }
        return $videoGame;
    }
+    /**
+     * @return iterable<string, array{0: VideoGame, 1: int|null}>
+     */
     public static function provideData(): iterable
     {
         yield 'No review' => [new VideoGame(), null];
