@@ -49,6 +49,7 @@ class Tag
     public function setName(string $name): Tag
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -60,6 +61,7 @@ class Tag
     public function setCode(string $code): Tag
     {
         $this->code = $code;
+
         return $this;
     }
 }
