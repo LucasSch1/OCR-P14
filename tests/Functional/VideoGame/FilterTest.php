@@ -34,6 +34,7 @@ final class FilterTest extends FunctionalTestCase
     // Test le filtrage des jeux vidéos par tags
     /**
      * @dataProvider provideTagFilterData
+     * @param array<string> $tagLabels
      */
     public function testShouldFilterVideoGamesByTag(array $tagLabels, int $expectedCount): void
     {
@@ -73,6 +74,9 @@ final class FilterTest extends FunctionalTestCase
 
 
     // Jeu de données comprennant différent phase de test
+    /**
+     * @return array<string, array{0: array<string>, 1: int}>
+     */
     public function provideTagFilterData(): array
     {
         return [

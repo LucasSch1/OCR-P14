@@ -90,8 +90,10 @@ final class ShowTest extends FunctionalTestCase
 
 
     // Test pour envoyer un formulaire invalide
+
     /**
      * @dataProvider provideInvalidFormData
+     * @param string $formData
      */
     public function testShouldNotPostReview(array $formData): void
     {
@@ -109,12 +111,19 @@ final class ShowTest extends FunctionalTestCase
 
 
     // Créer des données invalides
+    /**
+     * @return iterable<string, array<string, mixed>>
+     */
     public static function provideInvalidFormData(): iterable
     {
         yield 'too long comment' => [self::getFormData(['review[comment]' => str_repeat('a', 1001)])];
     }
 
     // Créer des données valides
+    /**
+     * @param array<string, mixed> $overrideData
+     * @return array<string, mixed>
+     */
     public static function getFormData(array $overrideData = []): array
     {
         return $overrideData + [

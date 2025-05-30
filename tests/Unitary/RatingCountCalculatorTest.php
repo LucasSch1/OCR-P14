@@ -38,6 +38,10 @@ final class RatingCountCalculatorTest extends TestCase
     }
 
     //  Génération des données de test
+
+    /**
+     * @return iterable<string, array{0: VideoGame, 1: NumberOfRatingPerValue}>
+     */
     public static function provideData(): iterable
     {
         yield 'No review' => [

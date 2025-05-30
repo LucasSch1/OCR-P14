@@ -20,7 +20,7 @@ class Tag
     #[Id]
     #[GeneratedValue]
     #[Column]
-    private ?int $id = null;
+    private int $id;
 
     #[Column(unique: true)]
     #[Slug(fields: ['name'])]
@@ -49,6 +49,17 @@ class Tag
     public function setName(string $name): Tag
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function setCode(string $code): Tag
+    {
+        $this->code = $code;
         return $this;
     }
 }

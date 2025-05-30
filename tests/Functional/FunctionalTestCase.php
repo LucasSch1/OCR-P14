@@ -26,7 +26,7 @@ abstract class FunctionalTestCase extends WebTestCase
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param class-string<T> $id
      * @return T
      */
@@ -35,6 +35,9 @@ abstract class FunctionalTestCase extends WebTestCase
         return $this->client->getContainer()->get($id);
     }
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     protected function get(string $uri, array $parameters = []): Crawler
     {
         return $this->client->request('GET', $uri, $parameters);
@@ -42,11 +45,14 @@ abstract class FunctionalTestCase extends WebTestCase
 
     protected function login(string $email = 'user+0@email.com'): void
     {
-        $user = $this->service(EntityManagerInterface::class)->getRepository(User::class)->findOneByEmail($email);
+        $user = $this->service(EntityManagerInterface::class)->getRepository(User::class)->findOneBy(['email'=>$email]);
 
         $this->client->loginUser($user);
     }
 
+    /**
+     * @param array<string, mixed> $formData
+     */
     protected function submit (string $button , array $formData = [], string $method = 'POST'): Crawler
     {
         return $this->client->submitForm($button, $formData, $method);
