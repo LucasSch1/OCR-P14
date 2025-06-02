@@ -39,21 +39,32 @@ final class VideoGameController extends AbstractController
             return new Response('Authentification requise pour publier une note.', Response::HTTP_UNAUTHORIZED);
         }
 
+
         $review = new Review();
 
         $form = $this->createForm(ReviewType::class, $review)->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->getUser();
-            if (!$user instanceof User) {
-                throw new \LogicException('L\'utilisateur courant n\'est pas du bon type.');
-            }
-            $review->setVideoGame($videoGame);
-            $review->setUser($user);
-            $entityManager->persist($review);
-            $entityManager->flush();
 
-            return $this->redirectToRoute('video_games_show', ['slug' => $videoGame->getSlug()]);
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $user = $this->getUser();
+                if (!$user instanceof User) {
+                    throw new \LogicException('L\'utilisateur courant n\'est pas du bon type.');
+                }
+
+                $review->setVideoGame($videoGame);
+                $review->setUser($user);
+                $entityManager->persist($review);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('video_games_show', ['slug' => $videoGame->getSlug()]);
+            }
+
+
+            return $this->render('views/video_games/show.html.twig', [
+                'video_game' => $videoGame,
+                'form' => $form,
+            ], new Response('', Response::HTTP_UNPROCESSABLE_ENTITY));
         }
 
         return $this->render('views/video_games/show.html.twig', ['video_game' => $videoGame, 'form' => $form]);
