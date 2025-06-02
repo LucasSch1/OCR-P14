@@ -1,0 +1,47 @@
+name : Integration Continuous
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions : ['8.2','8.3']
+
+
+    steps:
+      - name : Checkout
+        uses: actions/checkout@v2
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, xml, ctype, iconv, intl
+          tools: php-cs-fixer, phpunit
+        env:
+          update: true
+      - name: Build
+        run: |
+          docker compose -f "docker-compose.yml" up -d --build
+          composer install
+          php bin/console doctrine:database:drop -f --if-exists --env=test
+          php bin/console doctrine:database:create --env=test
+          php bin/console doctrine:migrations:migrate -n --env=test
+          php bin/console doctrine:fixtures:load -n --purge-with-truncate --env=test
+          php bin/console sass:build
+      - name: Tests
+        run: php bin/phpunit
+      - name: Analysis
+        run: php vendor/bin/phpstan
+        
+    
+    
+    
