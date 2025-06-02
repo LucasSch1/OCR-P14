@@ -12,6 +12,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 final class ReviewType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
@@ -31,6 +33,11 @@ final class ReviewType extends AbstractType
                     '4' => 4,
                     '5' => 5,
                 ],
+                'expanded' => true,
+                'constraints' => [
+                    new Assert\NotBlank(message: 'La note est obligatoire'),
+                    new Assert\Range(min: 1, max: 5),
+                ]
             ])
             ->add('comment', TextareaType::class, [
                 'label' => 'Commentaire',
