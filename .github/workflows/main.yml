@@ -28,6 +28,14 @@ jobs:
           tools: php-cs-fixer, phpunit
         env:
           update: true
+
+      - name: Install dependencies
+        run: |
+          composer install
+          if [ ! -f vendor/bin/phpstan ]; then
+            echo "PHPStan is not installed. Check composer dependencies." >&2
+            exit 1
+          fi
       - name: Build
         run: |
           docker compose -f "docker-compose.yml" up -d --build
