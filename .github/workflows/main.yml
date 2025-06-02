@@ -48,7 +48,7 @@ jobs:
       - name: Tests
         run: php bin/phpunit
       - name: Analysis
-        run: php vendor/bin/phpstan
+        run: php vendor/bin/phpstan analyse src tests
         
     
     
