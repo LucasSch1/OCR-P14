@@ -117,6 +117,7 @@ final class ShowTest extends FunctionalTestCase
     public static function provideInvalidFormData(): iterable
     {
         yield 'too long comment' => [self::getFormData(['review[comment]' => str_repeat('a', 1001)])];
+        yield 'empty rating' => [['review[comment]' => 'Un commentaire sans note']];
     }
 
     // Créer des données valides
